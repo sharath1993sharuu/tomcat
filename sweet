@@ -1,15 +1,49 @@
-cbcbehcbeq
-wnjdnwqjknd
-
-wdcjkwqncwqhnqwjn
-jwdhwlid
-]
-
-kscnlkqwnciqwj
-
-good morning
-
-hi how r u 
-
-hagjxgsajg
-dwgduywagdyuaw
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tomcat-statefulset
+  labels:
+    app: tomcat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tomcat
+  template:
+    metadata:
+      labels:
+        app: tomcat
+    spec:
+      containers:
+      - name: tomcat
+        image: tomcat         # replace it with your exactly <image_name:tags>
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: cce-evs-test
+          mountPath: /data
+        env:
+        - name: SPECIAL_LEVEL_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: special-config
+              key: SPECIAL_LEVEL
+        - name: SPECIAL_TYPE_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: special-config
+              key: SPECIAL_TYPE
+        - name: SECRET_USERNAME         #add secret
+          valueFrom:
+            secretKeyRef:
+              name: account
+              key: username
+        - name: SECRET_PASSWORD        #add secret
+          valueFrom:
+            secretKeyRef:
+              name: account
+              key: password
+      volumes:
+      - name: cce-evs-test
+        persistentVolumeClaim:
+          claimName: cce-evs-test
