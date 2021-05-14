@@ -46,8 +46,7 @@ spec:
       volumes:
       - name: cce-evs-test
         persistentVolumeClaim:
-          claimName: cce-evs-test
-          
+          claimName: cce-evs-teen
           
           
           
